@@ -1,0 +1,7 @@
+.input-form{
+    @apply border-black border-b-2 h-7
+}
+
+.label-form {
+    @apply text-xl font-medium text-slate-500
+}
