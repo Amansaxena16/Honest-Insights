@@ -1,4 +1,7 @@
 import thumbImage from '../../assets/thumbUp.svg'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 function Dashboard(){
 
@@ -36,7 +39,7 @@ function Dashboard(){
                     </div>
 
                     <div className="createSpaceBtn">
-                    <button className="bg-[rgb(93,93,255)] text-white font-semibold py-2 px-4 rounded shadow hover:bg-[rgb(66,66,201)]">Create a New Space</button>
+                    <button className="bg-[rgb(93,93,255)] text-white font-semibold py-2 px-4 rounded shadow hover:bg-[rgb(66,66,201)]"> <span><FontAwesomeIcon icon={faPlus} size="sm" style={{color: "#ffffff",}} /></span>{" "} <Link to="/create">Create a New Space</Link></button>
                     </div>
                 </div>
             </section>

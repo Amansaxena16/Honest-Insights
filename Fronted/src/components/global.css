@@ -5,3 +5,16 @@
 .label-form {
     @apply text-xl font-medium text-slate-500
 }
+
+.createSpaceHeading {
+    @apply text-3xl font-bold 
+}
+.spaceDiv {
+    @apply flex flex-col my-4 gap-y-1
+}
+.space_Label {
+    @apply font-semibold text-base text-left
+}
+.space_Input {
+    @apply border border-black p-1 text-sm h-9
+}
