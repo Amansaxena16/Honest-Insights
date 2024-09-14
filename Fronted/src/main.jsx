@@ -10,7 +10,7 @@ createRoot(document.getElementById('root')).render(
       domain="dev-8sgeby7a8y0stf8w.us.auth0.com"
       clientId="sLZyYVtHDTCl6g6Bfh4S6AegHe7DEx0f"
       authorizationParams={{
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin + "/dashboard"
       }}
     >
       <App />

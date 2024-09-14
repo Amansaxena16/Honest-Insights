@@ -1,10 +1,11 @@
 import thumbImage from '../../assets/thumbUp.svg'
 import { useAuth0 } from '@auth0/auth0-react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 function HomePage(){
-    const {user, loginWithRedirect, isAuthenticated, logout} = useAuth0()
+    const {loginWithRedirect} = useAuth0()
 
-    console.log('current user', user)
     return(
         <>
         <div className="thumbImage flex justify-center">
@@ -19,18 +20,12 @@ function HomePage(){
 
         <div className="btn flex justify-center ">
             <div className="login">
-                {isAuthenticated ?(
-                    <button onClick={(e) => logout()} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 my-8">Logout</button>
-                ) : (
-                    <button onClick={(e) => loginWithRedirect()} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 my-8">Login With Google</button>
-                )}
+                <button onClick={(e) => loginWithRedirect({redirectUri : window.location.origin + "/dashboard"})} className="bg-blue-500 text-white font-semibold py-2 px-4 rounded shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 my-8">
+                Login With {" "} <FontAwesomeIcon icon={faGoogle} style={{color: "#ffffff" ,}} /></button>
             </div>
-        </div>
-        {isAuthenticated && <h3>Hello {user.name}</h3>}
-        
+        </div>        
         </>
     )
 }
 
 export default HomePage
-// rgb(236, 154, 154)

@@ -2,9 +2,10 @@ import thumbImage from '../../assets/thumbUp.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function Dashboard(){
-
+    const {user,isAuthenticated,logout} = useAuth0()
     document.body.style.backgroundColor = 'rgb(21,23,25)'
     return(
         <>
@@ -21,10 +22,11 @@ function Dashboard(){
 
                 <div className="userName_LogoutBtn flex items-center gap-x-4 mr-4">
                     <div className="userName">
-                        <span className='text-base font-semibold text-white tracking-wider'>Hello Aman Saxena</span>
+                        {isAuthenticated && <span className='text-base font-semibold text-white tracking-wider'>Hello {user.name}</span>}
                     </div>
                     <div className="logoutBtn">
-                        <button className="bg-[rgb(93,93,255)] text-white font-semibold py-2 px-4 rounded-md shadow hover:bg-[rgb(66,66,201)]">Logout</button>
+                        <button className="bg-[rgb(93,93,255)] text-white font-semibold py-2 px-4 rounded-md shadow hover:bg-[rgb(66,66,201)]" onClick={() => logout({
+                                returnTo: window.location.origin})}>Logout</button>
                     </div>
                 </div>
             </nav>
