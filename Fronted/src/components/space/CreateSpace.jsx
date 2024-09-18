@@ -1,10 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import React, { useRef } from 'react';
 
 function CreateSpace(){
     document.body.style.backgroundColor = 'rgb(236,240,245)'
+    const fileInputRef = useRef(null);
 
+    function handleButtonClick(e){
+        e.preventDefault()
+        console.log('inside the function')
+        fileInputRef.current.click();
+    }
     return(
         <>
             <div className="space flex w-[90%] my-8 mx-auto bg-white">
@@ -14,7 +21,7 @@ function CreateSpace(){
                 <div className="previewHeading text-center my-2 text-[rgb(93,93,255)]">
                     <h1 className="createSpaceHeading">Live Preview</h1>
                 </div>
-                <div className="preview border-2 border-black">
+                <div className="preview border-[1px] border-slate-500">
                     {/* Live Preview Image div start from here  */}
                     <div className="livePreviewImage flex justify-center my-10">
                         <div className="liveImage w-40 h-40 rounded-full bg-[#f0f0f0]">
@@ -31,7 +38,7 @@ function CreateSpace(){
 
                     {/* Custom Message div start from here  */}
                     <div className="liveMessage text-center">
-                        <span className="font-normal text-slate-400 text-lg">Your Custom Message goes here...</span>
+                        <span className="font-medium text-slate-400 text-lg">Your Custom Message goes here...</span>
                     </div>
                     {/* end here  */}
 
@@ -41,19 +48,19 @@ function CreateSpace(){
                             <span className="text-xl font-semibold">Questions</span>
                         </div>
                         <div className="quest_list mx-4">
-                            <h5 className="text-slate-400 my-1 text-base font-normal">
+                            <h5 className="text-slate-600 font-medium my-1 text-base ">
                             <span>
                             <FontAwesomeIcon icon={faCircle} size='2xs' style={{ color: "#d3d3d3" }} />
                             </span>{" "}
                             Who are you / what are you working on?
                             </h5>
-                            <h5 className="text-slate-400 my-1 text-base font-normal">
+                            <h5 className="text-slate-600 my-1 text-base font-medium">
                             <span>
                             <FontAwesomeIcon icon={faCircle} size='2xs' style={{ color: "#d3d3d3" }} />
                             </span>{" "}
                             How has [our product / service] helped you?
                             </h5>
-                            <h5 className="text-slate-400 my-1 text-base font-normal">
+                            <h5 className="text-slate-600 my-1 text-base font-medium">
                             <span>
                             <FontAwesomeIcon icon={faCircle} size='2xs' style={{ color: "#d3d3d3" }} />
                             </span>{" "}
@@ -64,7 +71,7 @@ function CreateSpace(){
                     {/* end here  */}
 
                     {/* rating start div start from here  */}
-                    <div className="ratingStart text-center my-7"> 
+                    <div className="ratingStart text-center my-6"> 
                         <span><FontAwesomeIcon icon={faStar} size="lg" style={{color: "#FFD43B",}} /></span>
                         <span><FontAwesomeIcon icon={faStar} size="lg" style={{color: "#FFD43B",}} /></span>
                         <span><FontAwesomeIcon icon={faStar} size="lg" style={{color: "#FFD43B",}} /></span>
@@ -74,7 +81,7 @@ function CreateSpace(){
                     {/* end here  */}
 
                     <div className="sendBtn text-center">
-                        <button className="bg-[rgb(93,93,255)] text-white font-semibold py-[.7rem] px-[7rem] my-9 rounded-md shadow hover:bg-[rgb(66,66,201)]">Send in Text</button>
+                        <button className="bg-[rgb(93,93,255)] text-white font-semibold py-[.7rem] px-[7rem] my-5 rounded-md shadow hover:bg-[rgb(66,66,201)]">Send in Text</button>
                     </div>
                 </div>
             </div>
@@ -96,7 +103,7 @@ function CreateSpace(){
                         </div>
                         {/* end here */}
 
-                        {/* Space Logo div end here  */}
+                        {/* Space Logo div start from here  */}
                         <div className="spaceLogo spaceDiv flex-col">
                             <label htmlFor="logo" className="space_Label">Space Logo</label>
                             <div className="logo_changeBtn flex items-center gap-x-3">
@@ -104,8 +111,8 @@ function CreateSpace(){
                                     <img src="" alt="" />
                                 </div>
                                 <div className="changeBtn">
-                                    <button className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input type="file" name="logo"/>
+                                    <button id='changeButton' onClick={handleButtonClick} className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
+                                    <input type="file" name="logo" id='imageInput'/>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +121,7 @@ function CreateSpace(){
                         {/* Space Header Title div start from here  */}
                         <div className="spaceName spaceDiv ">
                             <label htmlFor="title" className="space_Label">Header Title</label>
-                            <input type="text" name="title" className="space_Input" placeholder="Your's Header Title..."/>
+                            <input ref={fileInputRef} type="text" name="title" className="space_Input" placeholder="Your's Header Title..."/>
                         </div>
                         {/* end here  */}
 

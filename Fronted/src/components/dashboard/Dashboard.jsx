@@ -7,6 +7,11 @@ import { useAuth0 } from '@auth0/auth0-react';
 function Dashboard(){
     const {user,isAuthenticated,logout} = useAuth0()
     document.body.style.backgroundColor = 'rgb(21,23,25)'
+
+    if(isAuthenticated && user){
+        const userID = user.sub
+    }
+
     return(
         <>
             {/* Navbar Section start from here  */}
