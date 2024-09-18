@@ -1,17 +1,23 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import React, { useRef } from 'react';
+import { useForm } from 'react-hook-form';
 
 function CreateSpace(){
     document.body.style.backgroundColor = 'rgb(236,240,245)'
-    const fileInputRef = useRef(null);
 
-    function handleButtonClick(e){
-        e.preventDefault()
-        console.log('inside the function')
-        fileInputRef.current.click();
+    // react hook form script start from here 
+    function onSubmit(data){
+        console.log("Form Data : ",data)
     }
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+      } = useForm()
+    // end here 
+
     return(
         <>
             <div className="space flex w-[90%] my-8 mx-auto bg-white">
@@ -87,6 +93,8 @@ function CreateSpace(){
             </div>
             {/* Live Preiview section end here  */}
 
+
+
             {/* Space Form section start from here  */}
             <div className="spaceForm w-3/5 text-center">
                 <div className="formHeading text-center my-2 text-[rgb(93,93,255)]">
@@ -94,11 +102,19 @@ function CreateSpace(){
                     <h3 className="text-slate-600 font-medium">After the Space is created, it will generate a dedicated page for collecting Feedback.</h3>
                 </div>
                 <div className="form mx-8">
-                    <form action="#">
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         {/* Space Name div start from here  */}
                         <div className="spaceName spaceDiv ">
                             <label htmlFor="name" className="space_Label">Space Name</label>
-                            <input type="text" name="name" className="space_Input" placeholder="Your's Space Name..."/>
+                            <input className="space_Input"
+                            {...register("name",
+                                {
+                                    required: true, 
+                                    minLength: {value: 5, message: "Space Name must have Minimum Length : 5"}, 
+                                    maxLength: {value: 20, message: "Not more than : 20"}
+                                })}  
+                            type="text" placeholder="Your's Space Name..." />
+                            {errors.name && <span className='font-bold text-red-600 text-left text-sm'>{errors.name.message}</span>}
                             <span className="text-left text-sm font-semibold">Public URL is: testimonial.to/your-space</span>
                         </div>
                         {/* end here */}
@@ -111,8 +127,8 @@ function CreateSpace(){
                                     <img src="" alt="" />
                                 </div>
                                 <div className="changeBtn">
-                                    <button id='changeButton' onClick={handleButtonClick} className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input type="file" name="logo" id='imageInput'/>
+                                    <button id='changeButton' className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
+                                    <input {...register("logo")}  id='imageInput'/>
                                 </div>
                             </div>
                         </div>
@@ -121,38 +137,38 @@ function CreateSpace(){
                         {/* Space Header Title div start from here  */}
                         <div className="spaceName spaceDiv ">
                             <label htmlFor="title" className="space_Label">Header Title</label>
-                            <input ref={fileInputRef} type="text" name="title" className="space_Input" placeholder="Your's Header Title..."/>
+                            <input {...register("title", {required: true, minLength: 10, maxLength: 50 })} type="text" name="title" className="space_Input" placeholder="Your's Header Title..."/>
                         </div>
                         {/* end here  */}
-
+ 
                         {/* Space Custome Message div start from here  */}
                         <div className="spaceMessage spaceDiv">
                             <label htmlFor="message" className="space_Label">Custom Message</label>
-                            <textarea name="message" className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."></textarea>
+                            <textarea {...register("message", {required: true, minLength: 10, maxLength: 200 })} name="message" className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."></textarea>
                         </div>
-                        {/* end here  */}
+                        {/* end here  */} 
 
                         {/* Question div start from here  */}
                         <div className="spaceQuestion spaceDiv">
                             <label htmlFor="questions" className="space_Label">Questions</label>
-                            <input type="text" name="questions" className="space_Input" placeholder="Who are you / what are you working on ? "/>
-                            <input type="text" name="questions" className="space_Input" placeholder="How has [our product / service] helped you ?"/>
-                            <input type="text" name="questions" className="space_Input" placeholder="What is the best thing about [our product / service]"/>
+                            <input {...register("question1", {required: true, maxLength: 20 })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "/>
+                            <input {...register("question2", {maxLength: 20 })} type="text" className="space_Input" placeholder="How has [our product / service] helped you ?"/>
+                            <input {...register("question3", {maxLength: 20 })} type="text" className="space_Input" placeholder="What is the best thing about [our product / service]"/>
                         </div>
                         {/* end here  */}
 
                         {/* Collect Start div star from here  */}
                         <div className="starRating flex items-center gap-x-2">
                             <label htmlFor="rating" className="space_Label">Collect Star Rating</label>
-                            <input type="checkbox" name="rating" className="space_Input"/>
-                        </div>
+                            <input {...register("rating")} type="checkbox" name="rating" className="space_Input"/>
+                        </div> 
                         {/* end here  */}
 
                         <div className="spaceBtn">
-                            <button className="bg-[rgb(93,93,255)] text-white font-semibold py-[.7rem] px-[13rem] my-9 rounded-md shadow hover:bg-[rgb(66,66,201)]">Create Your Space</button>
+                            <button className="bg-[rgb(93,93,255)] text-white font-semibold py-[.7rem] px-[13rem] my-9 rounded-md shadow hover:bg-[rgb(66,66,201)]" type='submit'>Create Your Space</button>
                         </div>
                     </form>
-                </div>
+                </div> 
             </div>
             {/* Space Form section end here */}
 
