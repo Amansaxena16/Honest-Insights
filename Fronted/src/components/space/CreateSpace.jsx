@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
+import { useRef, useState } from 'react';
 
 function CreateSpace(){
     document.body.style.backgroundColor = 'rgb(236,240,245)'
@@ -17,18 +18,37 @@ function CreateSpace(){
         formState: { errors, isSubmitting },
       } = useForm()
     // end here 
+    
+    // Image Input script start from here 
+    const inputRef = useRef(null)
+    function HandleButtonClick(){
+        inputRef.current.click()
+    }
+    // End here 
 
-    // const inputHeader = document.getElementById('inputHeader')
-    // const liveHeader = document.getElementById('liveHeader')
+    // Live Preview Script start from here 
+    const [title, setTitle] = useState()
+    const [message, setMessage] = useState()
+    const [quest1, setQuest1] = useState()
+    const [quest2, setQuest2] = useState()
+    const [quest3, setQuest3] = useState()
 
-    // inputHeader.addEventListener('input', function(){
-    //     if(inputHeader.value.trim() === ""){
-    //         liveHeader.innerText = "Header goes here..."
-    //     }
-    //     else{
-    //         liveHeader.innerText = inputHeader.value
-    //     }
-    // })
+    function HandleTitleChange(e){
+        setTitle(e.target.value)
+    }
+    function HandleMessageChange(e){
+        setMessage(e.target.value)
+    }
+    function HandleQuest1Change(e){
+        setQuest1(e.target.value)
+    }
+    function HandleQuest2Change(e){
+        setQuest2(e.target.value)
+    }
+    function HandleQuest3Change(e){
+        setQuest3(e.target.value)
+    }
+    // End here 
 
     return(
         <>
@@ -50,13 +70,13 @@ function CreateSpace(){
 
                     {/* Header div start from here  */}
                     <div className="liveHeader text-center my-3">
-                        <h1 className="text-4xl font-bold" id='liveHeader'>Header goes here...</h1>
+                        <h1 className="text-4xl font-bold" id='liveHeader'>{title ? title : "Header goes here..."}</h1>
                     </div>
                     {/* end here  */}
 
                     {/* Custom Message div start from here  */}
                     <div className="liveMessage text-center">
-                        <span className="font-medium text-slate-400 text-lg">Your Custom Message goes here...</span>
+                        <span className="font-medium text-slate-400 text-lg">{message ? message : "Your Custom Message goes here..."}</span>
                     </div>
                     {/* end here  */}
 
@@ -70,19 +90,19 @@ function CreateSpace(){
                             <span>
                             <FontAwesomeIcon icon={faCircle} size='2xs' style={{ color: "#d3d3d3" }} />
                             </span>{" "}
-                            Who are you / what are you working on?
+                            {quest1 ? quest1 : "Who are you / what are you working on?"}
                             </h5>
                             <h5 className="text-slate-600 my-1 text-base font-medium">
                             <span>
                             <FontAwesomeIcon icon={faCircle} size='2xs' style={{ color: "#d3d3d3" }} />
                             </span>{" "}
-                            How has [our product / service] helped you?
+                            {quest2 ? quest2 : "How has [our product / service] helped you?"}
                             </h5>
                             <h5 className="text-slate-600 my-1 text-base font-medium">
                             <span>
                             <FontAwesomeIcon icon={faCircle} size='2xs' style={{ color: "#d3d3d3" }} />
                             </span>{" "}
-                            What is the best thing about [our product / service]?
+                            {quest3 ? quest3 : "What is the best thing about [our product / service]?"}
                             </h5>
                         </div>
                     </div>
@@ -139,22 +159,23 @@ function CreateSpace(){
                                     <img src="" alt="" />
                                 </div>
                                 <div className="changeBtn">
-                                    <button id='changeButton' className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input className='hidden' {...register("logo")}  id='imageInput'/>
+                                    <button onClick={HandleButtonClick} className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
+                                    <input type="file" ref={inputRef} {...register("logo")}/>
                                 </div>
                             </div>
-                        </div>
+                        </div>                                         
                         {/* end here  */}
 
                         {/* Space Header Title div start from here  */}
                         <div className="spaceName spaceDiv ">
                             <label htmlFor="title" className="space_Label">Header Title</label>
-                            <input id='inputHeader' {...register("title", 
+                            <input {...register("title", 
                                 {
                                     required: true, 
                                     minLength: {value: 10, message: "Header Title must have 10 Character Length..."}, 
                                     maxLength: {value: 50, message: "Not More than : 50 "} 
-                                })} type="text" className="space_Input" placeholder="Your's Header Title..."/>
+                                })} type="text" className="space_Input" placeholder="Your's Header Title..."
+                                onChange={HandleTitleChange} value={title}/>
                                 {errors.title && <span className='error_message_span'>{errors.title.message}</span>}
                         </div>
                         {/* end here  */}
@@ -166,7 +187,8 @@ function CreateSpace(){
                                 required: true, 
                                 minLength: {value: 10, message: "Custom Message must have 10 Character Length..."}, 
                                 maxLength: {value: 200, message: "Not More than : 200"} 
-                                })} className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."></textarea>
+                                })} className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."
+                                onChange={HandleMessageChange} value={message}></textarea>
                                 {errors.message && <span className='error_message_span'>{errors.message.message}</span>}
                         </div>
                         {/* end here  */} 
@@ -179,20 +201,23 @@ function CreateSpace(){
                                 required: true,
                                 minLength : {value: 10, message: "Question must have 10 character Length..."},
                                 maxLength: {value: 40, message: "Not more than : 40"}
-                            })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "/>
+                            })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "
+                            onChange={HandleQuest1Change} value={quest1}/>
                             {errors.question1 && <span className='error_message_span'>{errors.question1.message}</span>}
 
                             <input {...register("question2", 
                             {
                                 minLength: {value: 10, message: "Question must have 10 character Lenght..."},
                                 maxLength: {value: 40, message: "Not more than : 40"}
-                            })} type="text" className="space_Input" placeholder="How has [our product / service] helped you ?"/>
+                            })} type="text" className="space_Input" placeholder="How has [our product / service] helped you ?"
+                            onChange={HandleQuest2Change} value={quest2}/>
                             {errors.question2 && <span className='error_message_span'>{errors.question2.message}</span>}
                             <input {...register("question3", 
                             {
                                 minLength: {value: 10, message: "Question must have 10 character Lenght..."},
                                 maxLength: {value: 40, message: "Not more than : 40"}
-                            })} type="text" className="space_Input" placeholder="What is the best thing about [our product / service]"/>
+                            })} type="text" className="space_Input" placeholder="What is the best thing about [our product / service]"
+                            onChange={HandleQuest3Change} value={quest3}/>
                             {errors.question3 && <span className='error_message_span'>{errors.question3.message}</span>}
                         </div>
                         {/* end here  */}
