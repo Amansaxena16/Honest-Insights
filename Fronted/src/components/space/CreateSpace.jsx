@@ -7,16 +7,28 @@ function CreateSpace(){
     document.body.style.backgroundColor = 'rgb(236,240,245)'
 
     // react hook form script start from here 
-    function onSubmit(data){
+    async function onSubmit(data){
+        await new Promise((resolve) => setTimeout(resolve, 3000))
         console.log("Form Data : ",data)
     }
     const {
         register,
         handleSubmit,
-        watch,
-        formState: { errors },
+        formState: { errors, isSubmitting },
       } = useForm()
     // end here 
+
+    // const inputHeader = document.getElementById('inputHeader')
+    // const liveHeader = document.getElementById('liveHeader')
+
+    // inputHeader.addEventListener('input', function(){
+    //     if(inputHeader.value.trim() === ""){
+    //         liveHeader.innerText = "Header goes here..."
+    //     }
+    //     else{
+    //         liveHeader.innerText = inputHeader.value
+    //     }
+    // })
 
     return(
         <>
@@ -38,7 +50,7 @@ function CreateSpace(){
 
                     {/* Header div start from here  */}
                     <div className="liveHeader text-center my-3">
-                        <h1 className="text-4xl font-bold">Header goes here...</h1>
+                        <h1 className="text-4xl font-bold" id='liveHeader'>Header goes here...</h1>
                     </div>
                     {/* end here  */}
 
@@ -110,11 +122,11 @@ function CreateSpace(){
                             {...register("name",
                                 {
                                     required: true, 
-                                    minLength: {value: 5, message: "Space Name must have Minimum Length : 5"}, 
-                                    maxLength: {value: 20, message: "Not more than : 20"}
+                                    minLength: {value: 5, message: "Space Name must have 5 Character Length..."}, 
+                                    maxLength: {value: 20, message: "Not more than : 30"}
                                 })}  
                             type="text" placeholder="Your's Space Name..." />
-                            {errors.name && <span className='font-bold text-red-600 text-left text-sm'>{errors.name.message}</span>}
+                            {errors.name && <span className='error_message_span'>{errors.name.message}</span>}
                             <span className="text-left text-sm font-semibold">Public URL is: testimonial.to/your-space</span>
                         </div>
                         {/* end here */}
@@ -128,7 +140,7 @@ function CreateSpace(){
                                 </div>
                                 <div className="changeBtn">
                                     <button id='changeButton' className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input {...register("logo")}  id='imageInput'/>
+                                    <input className='hidden' {...register("logo")}  id='imageInput'/>
                                 </div>
                             </div>
                         </div>
@@ -137,23 +149,51 @@ function CreateSpace(){
                         {/* Space Header Title div start from here  */}
                         <div className="spaceName spaceDiv ">
                             <label htmlFor="title" className="space_Label">Header Title</label>
-                            <input {...register("title", {required: true, minLength: 10, maxLength: 50 })} type="text" name="title" className="space_Input" placeholder="Your's Header Title..."/>
+                            <input id='inputHeader' {...register("title", 
+                                {
+                                    required: true, 
+                                    minLength: {value: 10, message: "Header Title must have 10 Character Length..."}, 
+                                    maxLength: {value: 50, message: "Not More than : 50 "} 
+                                })} type="text" className="space_Input" placeholder="Your's Header Title..."/>
+                                {errors.title && <span className='error_message_span'>{errors.title.message}</span>}
                         </div>
                         {/* end here  */}
  
                         {/* Space Custome Message div start from here  */}
                         <div className="spaceMessage spaceDiv">
                             <label htmlFor="message" className="space_Label">Custom Message</label>
-                            <textarea {...register("message", {required: true, minLength: 10, maxLength: 200 })} name="message" className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."></textarea>
+                            <textarea {...register("message", {
+                                required: true, 
+                                minLength: {value: 10, message: "Custom Message must have 10 Character Length..."}, 
+                                maxLength: {value: 200, message: "Not More than : 200"} 
+                                })} className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."></textarea>
+                                {errors.message && <span className='error_message_span'>{errors.message.message}</span>}
                         </div>
                         {/* end here  */} 
 
                         {/* Question div start from here  */}
                         <div className="spaceQuestion spaceDiv">
                             <label htmlFor="questions" className="space_Label">Questions</label>
-                            <input {...register("question1", {required: true, maxLength: 20 })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "/>
-                            <input {...register("question2", {maxLength: 20 })} type="text" className="space_Input" placeholder="How has [our product / service] helped you ?"/>
-                            <input {...register("question3", {maxLength: 20 })} type="text" className="space_Input" placeholder="What is the best thing about [our product / service]"/>
+                            <input {...register("question1", 
+                            {
+                                required: true,
+                                minLength : {value: 10, message: "Question must have 10 character Length..."},
+                                maxLength: {value: 40, message: "Not more than : 40"}
+                            })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "/>
+                            {errors.question1 && <span className='error_message_span'>{errors.question1.message}</span>}
+
+                            <input {...register("question2", 
+                            {
+                                minLength: {value: 10, message: "Question must have 10 character Lenght..."},
+                                maxLength: {value: 40, message: "Not more than : 40"}
+                            })} type="text" className="space_Input" placeholder="How has [our product / service] helped you ?"/>
+                            {errors.question2 && <span className='error_message_span'>{errors.question2.message}</span>}
+                            <input {...register("question3", 
+                            {
+                                minLength: {value: 10, message: "Question must have 10 character Lenght..."},
+                                maxLength: {value: 40, message: "Not more than : 40"}
+                            })} type="text" className="space_Input" placeholder="What is the best thing about [our product / service]"/>
+                            {errors.question3 && <span className='error_message_span'>{errors.question3.message}</span>}
                         </div>
                         {/* end here  */}
 
@@ -165,7 +205,9 @@ function CreateSpace(){
                         {/* end here  */}
 
                         <div className="spaceBtn">
-                            <button className="bg-[rgb(93,93,255)] text-white font-semibold py-[.7rem] px-[13rem] my-9 rounded-md shadow hover:bg-[rgb(66,66,201)]" type='submit'>Create Your Space</button>
+                            <button disabled={isSubmitting} className="bg-[rgb(93,93,255)] text-white font-semibold py-[.7rem] px-[13rem] my-9 rounded-md shadow hover:bg-[rgb(66,66,201)]" type='submit'>
+                                {isSubmitting ? "Creating Your Space..." : "Create Your Space"} 
+                            </button>
                         </div>
                     </form>
                 </div> 
