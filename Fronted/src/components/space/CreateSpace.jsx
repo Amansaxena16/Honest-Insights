@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { useRef, useState } from 'react';
 
 function CreateSpace(){
+
+
     document.body.style.backgroundColor = 'rgb(236,240,245)'
 
     // react hook form script start from here 
@@ -27,12 +29,23 @@ function CreateSpace(){
     // End here 
 
     // Live Preview Script start from here 
-    const [title, setTitle] = useState()
-    const [message, setMessage] = useState()
-    const [quest1, setQuest1] = useState()
-    const [quest2, setQuest2] = useState()
-    const [quest3, setQuest3] = useState()
+    const [imagePreview, setImagePreview] = useState(null)
+    const [title, setTitle] = useState("")
+    const [message, setMessage] = useState("")
+    const [quest1, setQuest1] = useState("")
+    const [quest2, setQuest2] = useState("")
+    const [quest3, setQuest3] = useState("")
 
+    function HandleImageChange(e){
+        const file = e.target.files[0]
+        if(file){
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                setImagePreview(reader.result)
+            }
+            reader.readAsDataURL(file)
+        }
+    }
     function HandleTitleChange(e){
         setTitle(e.target.value)
     }
@@ -62,8 +75,8 @@ function CreateSpace(){
                 <div className="preview border-[1px] border-slate-500">
                     {/* Live Preview Image div start from here  */}
                     <div className="livePreviewImage flex justify-center my-10">
-                        <div className="liveImage w-40 h-40 rounded-full bg-[#f0f0f0]">
-                            <img src="" alt="" />
+                        <div>
+                            <img src={imagePreview} alt="" className="liveImage w-44 h-44 rounded-full bg-slate-300"/>
                         </div>
                     </div>
                     {/* end here  */}
@@ -156,12 +169,12 @@ function CreateSpace(){
                         <div className="spaceLogo spaceDiv flex-col">
                             <label htmlFor="logo" className="space_Label">Space Logo</label>
                             <div className="logo_changeBtn flex items-center gap-x-3">
-                                <div className="imageArea w-14 h-14 rounded-full  bg-[#f0f0f0]">
-                                    <img src="" alt="" />
+                                <div className='rounded-full'>
+                                    <img src={imagePreview} alt="" className='rounded-full w-14 h-14 bg-white'/>
                                 </div>
                                 <div className="changeBtn">
                                     <button onClick={HandleButtonClick} className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input type="file" className='hidden' ref={inputRef}/>
+                                    <input type="file" className='hidden' ref={inputRef} onChange={HandleImageChange}/>
                                 </div>
                             </div>
                         </div>                                         
