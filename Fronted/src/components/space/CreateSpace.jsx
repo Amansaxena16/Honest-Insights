@@ -143,7 +143,8 @@ function CreateSpace(){
                                 {
                                     required: true, 
                                     minLength: {value: 5, message: "Space Name must have 5 Character Length..."}, 
-                                    maxLength: {value: 20, message: "Not more than : 30"}
+                                    maxLength: {value: 30, message: "Not more than : 30"},
+                                    pattern: {value: /^[A-Za-z]+$/i, message: "Improper Space Name!!"}
                                 })}  
                             type="text" placeholder="Your's Space Name..." />
                             {errors.name && <span className='error_message_span'>{errors.name.message}</span>}
@@ -160,7 +161,7 @@ function CreateSpace(){
                                 </div>
                                 <div className="changeBtn">
                                     <button onClick={HandleButtonClick} className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input type="file" ref={inputRef} {...register("logo")}/>
+                                    <input type="file" className='hidden' ref={inputRef}/>
                                 </div>
                             </div>
                         </div>                                         
@@ -173,7 +174,8 @@ function CreateSpace(){
                                 {
                                     required: true, 
                                     minLength: {value: 10, message: "Header Title must have 10 Character Length..."}, 
-                                    maxLength: {value: 50, message: "Not More than : 50 "} 
+                                    maxLength: {value: 50, message: "Not More than : 50 "},
+                                    pattern: {value: /^[A-Za-z]+$/i, message: "Improper Header Title!!"}
                                 })} type="text" className="space_Input" placeholder="Your's Header Title..."
                                 onChange={HandleTitleChange} value={title}/>
                                 {errors.title && <span className='error_message_span'>{errors.title.message}</span>}
@@ -186,7 +188,7 @@ function CreateSpace(){
                             <textarea {...register("message", {
                                 required: true, 
                                 minLength: {value: 10, message: "Custom Message must have 10 Character Length..."}, 
-                                maxLength: {value: 200, message: "Not More than : 200"} 
+                                maxLength: {value: 200, message: "Not More than : 200"},
                                 })} className="space_Input h-28" placeholder="Write a warm message to your customers, and give them simple directions on how to make the best Honest Insights..."
                                 onChange={HandleMessageChange} value={message}></textarea>
                                 {errors.message && <span className='error_message_span'>{errors.message.message}</span>}
@@ -200,7 +202,7 @@ function CreateSpace(){
                             {
                                 required: true,
                                 minLength : {value: 10, message: "Question must have 10 character Length..."},
-                                maxLength: {value: 40, message: "Not more than : 40"}
+                                maxLength: {value: 40, message: "Not more than : 40"},
                             })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "
                             onChange={HandleQuest1Change} value={quest1}/>
                             {errors.question1 && <span className='error_message_span'>{errors.question1.message}</span>}
@@ -225,7 +227,8 @@ function CreateSpace(){
                         {/* Collect Start div star from here  */}
                         <div className="starRating flex items-center gap-x-2">
                             <label htmlFor="rating" className="space_Label">Collect Star Rating</label>
-                            <input {...register("rating")} type="checkbox" name="rating" className="space_Input"/>
+                            <input {...register("rating")} type="checkbox" name="rating" className="space_Input"
+                            defaultChecked={true}/>
                         </div> 
                         {/* end here  */}
 
