@@ -3,5 +3,5 @@ from home.views import *
 
 urlpatterns = [
     path('',getSpaceData),
-    path('postSpace/',postSpaceData)
+    path('postSpaceData/',postSpaceData)
 ]

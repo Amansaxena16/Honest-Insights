@@ -17,7 +17,9 @@ def getSpaceData(request):
 def postSpaceData(request):
     data = request.data
     serializer = SpaceSerializer(data = data)
+    print(serializer)
     if serializer.is_valid():
+        print('valid')
         serializer.save()
         return Response({
             'data' : serializer.data,

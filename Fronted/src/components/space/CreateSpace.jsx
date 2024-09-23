@@ -10,10 +10,6 @@ function CreateSpace(){
     document.body.style.backgroundColor = 'rgb(236,240,245)'
 
     // react hook form script start from here 
-    async function onSubmit(data){
-        await new Promise((resolve) => setTimeout(resolve, 3000))
-        console.log("Form Data : ",data)
-    }
     const {
         register,
         handleSubmit,
@@ -35,10 +31,12 @@ function CreateSpace(){
     const [quest1, setQuest1] = useState("")
     const [quest2, setQuest2] = useState("")
     const [quest3, setQuest3] = useState("")
+    const [selectlLogo, setSelectedLogo] = useState(null)
 
     function HandleImageChange(e){
         const file = e.target.files[0]
         if(file){
+            setSelectedLogo(file)
             const reader = new FileReader()
             reader.onloadend = () => {
                 setImagePreview(reader.result)
@@ -62,6 +60,47 @@ function CreateSpace(){
         setQuest3(e.target.value)
     }
     // End here 
+
+    // OnSubmit script start from here
+    async function onSubmit(data){
+        await new Promise((resolve) => setTimeout(resolve, 3000))
+        const formData = new FormData
+
+        // Append form field
+        formData.append('name',data.name)
+        formData.append('title',data.title)
+        formData.append('message',data.message)
+        formData.append('quest1',data.question1)
+        formData.append('quest2',data.question2)
+        formData.append('quest3',data.question3)
+        formData.append('starRating',data.rating)
+
+        if(selectlLogo){
+            formData.append('logo',selectlLogo)
+        }
+
+        // Submitting the form data to the backend
+        try{
+            const response = await fetch('http://127.0.0.1:8000/postSpaceData/', {
+                method: 'POST',
+                body: formData
+            })
+
+            if(response.ok){
+                console.log('Data pahuch gaya hai mitro!!')
+                reset()
+                selectlLogo(null)
+                setImagePreview(null)
+
+            }
+            else{
+                console.log('Bhaak error aa gaya!!')
+            }
+        }catch(error){
+            console.error('Error while submitting form', error)
+        }
+    }
+    // end here 
 
     return(
         <>
@@ -157,7 +196,6 @@ function CreateSpace(){
                                     required: true, 
                                     minLength: {value: 5, message: "Space Name must have 5 Character Length..."}, 
                                     maxLength: {value: 30, message: "Not more than : 30"},
-                                    pattern: {value: /^[A-Za-z]+$/i, message: "Improper Space Name!!"}
                                 })}  
                             type="text" placeholder="Your's Space Name..." />
                             {errors.name && <span className='error_message_span'>{errors.name.message}</span>}
@@ -169,12 +207,12 @@ function CreateSpace(){
                         <div className="spaceLogo spaceDiv flex-col">
                             <label htmlFor="logo" className="space_Label">Space Logo</label>
                             <div className="logo_changeBtn flex items-center gap-x-3">
-                                <div className='rounded-full'>
-                                    <img src={imagePreview} alt="" className='rounded-full w-14 h-14 bg-white'/>
+                                <div className="w-14 h-14 rounded-full overflow-hidden">
+                                    <img src={imagePreview} alt="" className="w-full h-full bg-slate-300"/>
                                 </div>
                                 <div className="changeBtn">
                                     <button onClick={HandleButtonClick} className="bg-[rgb(93,93,255)] text-white font-semibold py-1 px-2 rounded-md shadow hover:bg-[rgb(66,66,201)]">Change Image</button>
-                                    <input type="file" className='hidden' ref={inputRef} onChange={HandleImageChange}/>
+                                    <input type="file" className='hidden' onChange={HandleImageChange} ref={inputRef}/>
                                 </div>
                             </div>
                         </div>                                         
@@ -188,7 +226,6 @@ function CreateSpace(){
                                     required: true, 
                                     minLength: {value: 10, message: "Header Title must have 10 Character Length..."}, 
                                     maxLength: {value: 50, message: "Not More than : 50 "},
-                                    pattern: {value: /^[A-Za-z]+$/i, message: "Improper Header Title!!"}
                                 })} type="text" className="space_Input" placeholder="Your's Header Title..."
                                 onChange={HandleTitleChange} value={title}/>
                                 {errors.title && <span className='error_message_span'>{errors.title.message}</span>}
@@ -215,7 +252,7 @@ function CreateSpace(){
                             {
                                 required: true,
                                 minLength : {value: 10, message: "Question must have 10 character Length..."},
-                                maxLength: {value: 40, message: "Not more than : 40"},
+                                maxLength: {value: 40, message: "Not more than : 80"},
                             })} type="text" className="space_Input" placeholder="Who are you / what are you working on ? "
                             onChange={HandleQuest1Change} value={quest1}/>
                             {errors.question1 && <span className='error_message_span'>{errors.question1.message}</span>}
@@ -223,14 +260,14 @@ function CreateSpace(){
                             <input {...register("question2", 
                             {
                                 minLength: {value: 10, message: "Question must have 10 character Lenght..."},
-                                maxLength: {value: 40, message: "Not more than : 40"}
+                                maxLength: {value: 40, message: "Not more than : 80"}
                             })} type="text" className="space_Input" placeholder="How has [our product / service] helped you ?"
                             onChange={HandleQuest2Change} value={quest2}/>
                             {errors.question2 && <span className='error_message_span'>{errors.question2.message}</span>}
                             <input {...register("question3", 
                             {
                                 minLength: {value: 10, message: "Question must have 10 character Lenght..."},
-                                maxLength: {value: 40, message: "Not more than : 40"}
+                                maxLength: {value: 40, message: "Not more than : 80"}
                             })} type="text" className="space_Input" placeholder="What is the best thing about [our product / service]"
                             onChange={HandleQuest3Change} value={quest3}/>
                             {errors.question3 && <span className='error_message_span'>{errors.question3.message}</span>}

@@ -5,3 +5,4 @@ class SpaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpaceData
         fields = '__all__'
+        
